@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -24,6 +24,7 @@ jobs:
 
     - name: Build
       run: |
-        npm install
+        npm i pnpm -g
+        pnpm install
         webpack --mode production
         node ./scripts/build-tampermonkey.js
