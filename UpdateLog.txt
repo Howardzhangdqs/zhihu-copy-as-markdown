@@ -1,0 +1,21 @@
+23.10.30: 脚本开写
+23.10.31:
+    feat: 解析渲染表格
+    feat: 解析渲染链接
+    fix: 加了一个被忘掉的break，但是我忘了是哪忘了加了
+    fix: 修复编辑框会被加上`复制为Markdown`的按钮
+    doc: 给types加了完整的注释
+    doc: 给Lexer和Parser函数添加完整的注释
+    chore: 更改触发方式
+    feat: 链接解析为直达链接
+    feat: 下载内容为zip
+    feat: 下载的zip中包含内容信息（`info.txt`）
+    fix: 修复回答详情里图片无法下载
+    fix: 首页按钮无法正常加载
+23.11.1:
+    feat: `info.txt`加入作者信息
+    chore: `info.txt`更名为`info.json`
+    fix: 主页中`info.json > url`字段获取错误
+    chore: `info.json`中`url`字段改为`link`
+    fix: 主页文章作者信息获取错误
+    chore: 发布在Github上

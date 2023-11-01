@@ -1,0 +1,20 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "rules": {
+        // tab缩进
+        "indent": ["error", "tab"],
+        // 使用双引号
+        "quotes": ["error", "double"]
+    },
+    "extends": [
+        // "eslint:recommended"
+    ],
+    "ignorePatterns": [
+        "node_modules/",
+        "dist/",
+        "build/"
+    ]
+}
