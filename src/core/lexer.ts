@@ -249,6 +249,7 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 			case "code": {
 				res.push({
 					type: TokenType.InlineCode,
+					content: el.innerText,
 					dom: el,
 				} as TokenTextCode);
 				break;

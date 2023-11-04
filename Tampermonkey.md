@@ -8,8 +8,8 @@
 ## 原理
 
 1. 获取页面中所有的富文本框 `DOM`
-2. 将 `DOM` 使用 `./src/lexer.ts` 转换为 `Lex`
-3. 将 `Lex` 使用 `./src/parser.ts` 转换为 `Markdown`
+2. 将 `DOM` 使用 `./src/core/lexer.ts` 转换为 `Lex`
+3. 将 `Lex` 使用 `./src/core/parser.ts` 转换为 `Markdown`
 
 
 ## TODO
