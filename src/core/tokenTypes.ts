@@ -19,6 +19,7 @@ export enum TokenType {
     Code,
     Link,
     Table,
+    Video,
 }
 
 
@@ -28,7 +29,7 @@ export enum TokenType {
 export type TokenTextItalic = {
     type: TokenType.Italic;
     content: TokenTextType[];
-    dom: HTMLElement;
+    dom?: HTMLElement;
 };
 
 /**
@@ -37,7 +38,7 @@ export type TokenTextItalic = {
 export type TokenTextBold = {
     type: TokenType.Bold;
     content: TokenTextType[];
-    dom: HTMLElement;
+    dom?: HTMLElement;
 };
 
 /**
@@ -47,7 +48,7 @@ export type TokenTextLink = {
     type: TokenType.InlineLink;
     text: string;
     href: string;
-    dom: HTMLAnchorElement;
+    dom?: HTMLAnchorElement;
 };
 
 /** 
@@ -73,7 +74,7 @@ export type TokenTextBr = {
 export type TokenTextCode = {
     type: TokenType.InlineCode;
     content: string;
-    dom: HTMLElement;
+    dom?: HTMLElement;
 };
 
 /** 
@@ -82,7 +83,7 @@ export type TokenTextCode = {
 export type TokenTextInlineMath = {
     type: TokenType.InlineMath;
     content: string;
-    dom: HTMLElement;
+    dom?: HTMLElement;
 };
 
 /** 
@@ -103,7 +104,7 @@ export type TokenTextType =
 export type TokenText = {
     type: TokenType.Text;
     content: TokenTextType[];
-    dom: HTMLParagraphElement
+    dom?: HTMLParagraphElement
 };
 
 
@@ -113,7 +114,7 @@ export type TokenText = {
 export type TokenBlockquote = {
     type: TokenType.Blockquote;
     content: TokenTextType[];
-    dom: HTMLQuoteElement
+    dom?: HTMLQuoteElement
 };
 
 
@@ -123,7 +124,7 @@ export type TokenBlockquote = {
 export type TokenUList = {
     type: TokenType.UList;
     content: TokenTextType[][]; // 谢天谢地，知乎List不会嵌套
-    dom: HTMLUListElement;
+    dom?: HTMLUListElement;
 };
 
 
@@ -133,7 +134,7 @@ export type TokenUList = {
 export type TokenOList = {
     type: TokenType.Olist;
     content: TokenTextType[][];
-    dom: HTMLOListElement;
+    dom?: HTMLOListElement;
 };
 
 
@@ -144,7 +145,7 @@ export type TokenCode = {
     type: TokenType.Code;
     content: string;
     language?: string;
-    dom: HTMLDivElement;
+    dom?: HTMLDivElement;
 };
 
 
@@ -153,7 +154,7 @@ export type TokenCode = {
  */
 export type TokenHR = {
     type: TokenType.HR;
-    dom: HTMLHRElement;
+    dom?: HTMLHRElement;
 };
 
 
@@ -164,7 +165,7 @@ export type TokenLink = {
     type: TokenType.Link;
     text: string;
     href: string;
-    dom: HTMLDivElement;
+    dom?: HTMLDivElement;
 };
 
 
@@ -174,7 +175,7 @@ export type TokenLink = {
 export type TokenH1 = {
     type: TokenType.H1;
     text: string;
-    dom: HTMLHeadingElement;
+    dom?: HTMLHeadingElement;
 };
 
 
@@ -184,7 +185,7 @@ export type TokenH1 = {
 export type TokenH2 = {
     type: TokenType.H2;
     text: string;
-    dom: HTMLHeadingElement;
+    dom?: HTMLHeadingElement;
 };
 
 
@@ -194,7 +195,9 @@ export type TokenH2 = {
 export type TokenFigure = {
     type: TokenType.Figure;
     src: string;
-    dom: HTMLElement;
+    local: boolean; // 文件是否已经下载
+    localSrc?: string;
+    dom?: HTMLElement;
 };
 
 
@@ -204,8 +207,20 @@ export type TokenFigure = {
 export type TokenTable = {
     type: TokenType.Table;
     content: string[][];
-    dom: HTMLTableElement;
+    dom?: HTMLTableElement;
 };
+
+
+/**
+ * Represents a token video.
+ */
+export type TokenVideo = {
+    type: TokenType.Video;
+    src: string;
+    local: boolean; // 文件是否已经下载
+    localSrc: string;
+    dom?: HTMLDivElement;
+}
 
 
 /** 
@@ -222,5 +237,6 @@ export type LexType =
     TokenBlockquote |
     TokenHR |
     TokenLink |
-    TokenTable
+    TokenTable |
+    TokenVideo
     ;

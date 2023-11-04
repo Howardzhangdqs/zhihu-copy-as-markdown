@@ -4,28 +4,6 @@
 
 代码仓库：<https://github.com/Howardzhangdqs/zhihu-copy-as-markdown>
 
-## Usage
-
-1. 安装依赖
-
-```bash
-pnpm i
-```
-
-2. 测试
-
-```bash
-pnpm dev
-```
-
-3. 打包
-
-```bash
-pnpm build
-```
-
-`dist/tampermonkey-script.js` 即为脚本，复制到油猴即可使用。
-
 
 ## 原理
 
@@ -36,7 +14,7 @@ pnpm build
 
 ## TODO
 
-- [ ] 下载文章时同时包含头图
-- [ ] TOC解析
-- [ ] Markdown纯文本转义
+- 下载文章时同时包含头图
+- TOC解析
+- Markdown纯文本转义
 

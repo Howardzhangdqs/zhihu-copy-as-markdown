@@ -5,7 +5,7 @@
     },
     "rules": {
         // tab缩进
-        "indent": ["error", "tab"],
+        "indent": [0, "tab"],
         // 使用双引号
         "quotes": ["error", "double"]
     },

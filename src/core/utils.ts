@@ -96,13 +96,20 @@ export const getAuthor = (dom: HTMLElement): AuthorType | null => {
 			if (author_dom) author_dom = author_dom.querySelector(".Post-Author") as HTMLElement;
 		}
 
+		// 想法
+		if (!author_dom) {
+			author_dom = getParent(dom, "PinItem");
+			if (author_dom) author_dom = author_dom.querySelector(".PinItem-author") as HTMLElement;
+		}
+
 		if (author_dom) {
-			let authorName_dom = author_dom.querySelector(".UserLink-link") as HTMLAnchorElement;
+			let authorName_dom = author_dom.querySelector(".AuthorInfo-name .UserLink-link") as HTMLAnchorElement;
 			let authorBadge_dom = author_dom.querySelector(".AuthorInfo-badgeText") as HTMLDivElement;
+			console.log("authorName_dom", authorName_dom);
 			if (author_dom != null) return {
-				name: authorName_dom.innerText,
+				name: authorName_dom.innerText || authorName_dom.children[0].getAttribute("alt"),
 				url: authorName_dom.href,
-				badge: authorBadge_dom.innerHTML
+				badge: authorBadge_dom ? authorBadge_dom.innerText : ""
 			};
 		}
 
@@ -122,14 +129,18 @@ export const getAuthor = (dom: HTMLElement): AuthorType | null => {
 export const getURL = (dom: HTMLElement): string => {
 	const currentURL = window.location.origin + window.location.pathname;
 
-	// 主页回答
-	if (window.location.pathname == "/") {
-		let content_dom = getParent(dom, "AnswerItem");
-		if (!content_dom) content_dom = getParent(dom, "ArticleItem");
-		if (!content_dom) return currentURL + "#WARNING_Failed_to_get_URL";
+	try {
 
-		return (content_dom.querySelector("a[data-za-detail-view-id]") as HTMLAnchorElement).href;
-	}
+		// 主页回答
+		if (window.location.pathname == "/") {
+			let content_dom = getParent(dom, "AnswerItem");
+			if (!content_dom) content_dom = getParent(dom, "ArticleItem");
+			if (!content_dom) return currentURL + "#WARNING_Failed_to_get_URL";
+
+			return (content_dom.querySelector("a[data-za-detail-view-id]") as HTMLAnchorElement).href;
+		}
+
+	} catch { }
 
 	return currentURL;
 };

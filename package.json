@@ -1,6 +1,6 @@
 {
   "name": "zhihu-downloader",
-  "version": "0.2.10",
+  "version": "0.3.9",
   "scripts": {
     "dev": "run-p watch serve",
     "serve": "live-server ./dist",
@@ -9,7 +9,7 @@
     "build:tampermonkey": "node ./scripts/build-tampermonkey.js",
     "build": "run-s build:update build:production build:tampermonkey",
     "build:update": "node ./scripts/add-version.js",
-    "lint": "eslint --fix --ext .js,.ts ./src ./scripts"
+    "lint": "eslint --fix --ext .js,.ts ./src ./scripts webpack.config.js"
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.5.3",

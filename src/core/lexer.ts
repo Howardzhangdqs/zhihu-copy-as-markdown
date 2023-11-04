@@ -19,6 +19,7 @@ import type {
 	TokenHR,
 	TokenLink,
 	TokenTable,
+	TokenVideo,
 } from "./tokenTypes";
 
 import { TokenType } from "./tokenTypes";
@@ -75,6 +76,13 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 					href: ZhihuLink2NormalLink(link.href),
 					dom: node as HTMLDivElement
 				} as TokenLink);
+			} else if (node.querySelector("video")) {
+				tokens.push({
+					type: TokenType.Video,
+					src: node.querySelector("video").getAttribute("src"),
+					local: false,
+					dom: node
+				} as TokenVideo);
 			}
 			break;
 		}
@@ -94,6 +102,7 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 			if (src) {
 				tokens.push({
 					type: TokenType.Figure, src,
+					local: false,
 					dom: node as HTMLElement
 				} as TokenFigure);
 			}
@@ -252,6 +261,14 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 						content: el.getAttribute("data-tex"),
 						dom: el,
 					} as TokenTextInlineMath);
+				} else {
+					if (el.children[0].classList.contains("RichContent-EntityWord")) {
+						res.push({
+							type: TokenType.PlainText,
+							text: el.innerText,
+							dom: el,
+						} as TokenTextPlain);
+					}
 				}
 				break;
 			}
