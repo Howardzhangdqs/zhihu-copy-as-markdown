@@ -65,6 +65,11 @@ export const parser = (input: LexType[]): string[] => {
 				break;
 			};
 
+			case TokenType.Gif: {
+				output.push(`![](${token.local ? token.localSrc : token.src})`);
+				break;
+			};
+
 			case TokenType.Video: {
 				// 创建一个虚拟的 DOM 节点
 				const dom = document.createElement("video");

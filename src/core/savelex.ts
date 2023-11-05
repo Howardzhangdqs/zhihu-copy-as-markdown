@@ -32,7 +32,12 @@ export default async (
 				const { file_name } = await downloadAndZip(token.src, assetsFolder);
 				token.localSrc = `./${assetsPath}/${file_name}`;
 				token.local = true;
-			};
+			} else if (token.type === TokenType.Gif) {
+				const { file_name } = await downloadAndZip(token.src, assetsFolder);
+				token.localSrc = `./${assetsPath}/${file_name}`;
+				token.local = true;
+			}
+
 		};
 
 	}

@@ -1,5 +1,6 @@
 import path from "path";
 import webpack from "webpack";
+import fs from "fs";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 
@@ -24,8 +25,14 @@ const devConfig = {
         path: path.resolve(__dirname, "dist"),
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/index.html",
+        ...fs.readdirSync("./test").map((file) => {
+            console.log(file)
+            if (file.endsWith(".html")) {
+                return new HtmlWebpackPlugin({
+                    filename: file,
+                    template: `./test/${file}`,
+                });
+            }
         }),
     ],
 };
@@ -38,25 +45,33 @@ export default (env, argv) => {
                 rules: [
                     {
                         test: /\.ts$/,
-                        use: "ts-loader",
                         exclude: /node_modules/,
-                    },
-                    {
-                        test: /\.(?:js|mjs|cjs)$/,
-                        exclude: /node_modules/,
-                        use: {
-                            loader: "babel-loader",
-                            options: {
-                                presets: [
-                                    ["@babel/preset-env", {
-                                        useBuiltIns: "usage",
-                                        corejs: 3,
-                                        targets: "> 0.25%, not dead"
-                                    }]
-                                ]
+                        use: [
+                            {
+                                loader: "ts-loader",
+                                options: {
+                                    transpileOnly: true
+                                }
                             }
-                        }
-                    }
+                        ]
+                    },
+                    // {
+                    //     test: /\.(?:js|mjs|cjs|ts)$/,
+                    //     exclude: /node_modules/,
+                    //     use: {
+                    //         loader: "babel-loader",
+                    //         options: {
+                    //             presets: [
+                    //                 ["@babel/preset-env", {
+                    //                     useBuiltIns: "usage",
+                    //                     corejs: 3,
+                    //                     targets: "> 0.25%, not dead"
+                    //                 }],
+                    //                 "@babel/preset-typescript"
+                    //             ]
+                    //         }
+                    //     }
+                    // }
                 ],
             },
             resolve: {

@@ -5,6 +5,7 @@ export enum TokenType {
     H1, H2,
     Text,
     Figure,
+    Gif,
     InlineLink,
     InlineCode,
     InlineMath,
@@ -202,6 +203,18 @@ export type TokenFigure = {
 
 
 /**
+ * Represents a token gif.
+ */
+export type TokenGif = {
+    type: TokenType.Gif;
+    src: string;
+    local: boolean; // 文件是否已经下载
+    localSrc?: string;
+    dom?: HTMLElement;
+};
+
+
+/**
  * Represents a token table.
  */
 export type TokenTable = {
@@ -238,5 +251,6 @@ export type LexType =
     TokenHR |
     TokenLink |
     TokenTable |
-    TokenVideo
+    TokenVideo |
+    TokenGif
     ;
