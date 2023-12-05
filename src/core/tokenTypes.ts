@@ -8,7 +8,7 @@ export enum TokenType {
     Gif,
     InlineLink,
     InlineCode,
-    InlineMath,
+    Math,
     Italic,
     Bold,
     PlainText,
@@ -82,7 +82,7 @@ export type TokenTextCode = {
  * Represents a token of inline math.
  */
 export type TokenTextInlineMath = {
-    type: TokenType.InlineMath;
+    type: TokenType.Math;
     content: string;
     dom?: HTMLElement;
 };

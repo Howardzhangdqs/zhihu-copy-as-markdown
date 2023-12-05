@@ -178,8 +178,9 @@ const renderRich = (input: TokenTextType[], joint: string = ""): string => {
 				break;
 			};
 
-			case TokenType.InlineMath: {
-				res += `$${(el as TokenTextInlineMath).content}$`;
+			case TokenType.Math: {
+				if (input.length == 1) res += `$$\n${(el as TokenTextInlineMath).content}\n$$`;
+				else res += `$${(el as TokenTextInlineMath).content}$`;
 				break;
 			};
 		}

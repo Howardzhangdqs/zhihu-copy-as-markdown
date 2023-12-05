@@ -55,23 +55,6 @@ export default (env, argv) => {
                             }
                         ]
                     },
-                    // {
-                    //     test: /\.(?:js|mjs|cjs|ts)$/,
-                    //     exclude: /node_modules/,
-                    //     use: {
-                    //         loader: "babel-loader",
-                    //         options: {
-                    //             presets: [
-                    //                 ["@babel/preset-env", {
-                    //                     useBuiltIns: "usage",
-                    //                     corejs: 3,
-                    //                     targets: "> 0.25%, not dead"
-                    //                 }],
-                    //                 "@babel/preset-typescript"
-                    //             ]
-                    //         }
-                    //     }
-                    // }
                 ],
             },
             resolve: {

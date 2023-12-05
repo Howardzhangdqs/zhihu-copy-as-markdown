@@ -2,7 +2,7 @@
 
 一键复制知乎文章/回答/想法为Markdown，下载文章/回答/想法为zip（包含素材图片与文章/回答/想法信息），备份你珍贵的回答与文章。
 
-代码仓库：<https://github.com/Howardzhangdqs/zhihu-copy-as-markdown>
+安装地址：<https://greasyfork.org/zh-CN/scripts/478608>
 
 ## Usage
 

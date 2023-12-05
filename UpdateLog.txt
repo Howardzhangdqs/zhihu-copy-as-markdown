@@ -31,3 +31,6 @@
 23.11.5:
     feat: 解析Gif
     chore: 更方便的测试
+23.12.5:
+    feat: 单独成段的内联公式升级为行间公式 [来源](https://zhuanlan.zhihu.com/p/665008681#comment-10744866371)
+    fix: 表格换行符解析错误

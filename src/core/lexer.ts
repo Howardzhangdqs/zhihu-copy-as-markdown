@@ -184,7 +184,7 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 
 					for (let row of rows) {
 						const cells = Array.from(row.cells);
-						res.push(cells.map((cell) => cell.textContent.trim()));
+						res.push(cells.map((cell) => cell.innerHTML));
 					}
 
 					return res;
@@ -226,8 +226,15 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 		} as TokenTextPlain];
 	}
 
-	const childs = Array.from(node.childNodes);
+	let childs = Array.from(node.childNodes);
 	const res: TokenTextType[] = [];
+
+	// 处理 <blockquote><p></p></blockquote> 的奇观
+	try {
+		if (childs.length == 1 && (childs[0] as HTMLElement).tagName.toLowerCase() == "p") {
+			childs = Array.from((childs[0] as HTMLElement).childNodes);
+		}
+	} catch { }
 
 	for (let child of childs) {
 
@@ -239,6 +246,7 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 			} as TokenTextPlain);
 		} else {
 			let el = child as HTMLElement;
+
 			switch (el.tagName.toLowerCase()) {
 				case "b": {
 					res.push({
@@ -278,7 +286,7 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 				case "span": {
 					if (el.classList.contains("ztext-math")) {
 						res.push({
-							type: TokenType.InlineMath,
+							type: TokenType.Math,
 							content: el.getAttribute("data-tex"),
 							dom: el,
 						} as TokenTextInlineMath);
