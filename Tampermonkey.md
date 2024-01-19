@@ -9,7 +9,7 @@
 
 每个问题的标题上会多出一个`批量下载`按钮，点击后即可下载该问题下所有已经加载的回答为单个Zip。
 
-![截图](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/raw/main/resources/screenshot1.png)
+![截图](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/raw/master/resources/screenshot1.png)
 
 `下载全文为Zip`和`批量下载`都会将所有的内容（包括图片、视频等附件）一同打包并下载，备份您和他人的劳动成果。
 
