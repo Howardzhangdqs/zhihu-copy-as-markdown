@@ -1,6 +1,6 @@
 {
   "name": "zhihu-downloader",
-  "version": "0.3.16",
+  "version": "0.3.19",
   "scripts": {
     "dev": "run-p build:test watch serve",
     "serve": "live-server ./dist",

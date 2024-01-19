@@ -11,6 +11,7 @@ export default async (dom: HTMLElement): Promise<{
     markdown: string[],
     zip: JSZip,
     title: string,
+    itemId: string,
 }> => {
     const lex = lexer(dom.childNodes as NodeListOf<Element>);
     const markdown = parser(lex);
@@ -57,5 +58,5 @@ export default async (dom: HTMLElement): Promise<{
         "zop-extra-module": zaExtra,
     }, null, 4));
 
-    return { lex, markdown, zip, title };
+    return { lex, markdown, zip, title: title, itemId: zop.itemId };
 };

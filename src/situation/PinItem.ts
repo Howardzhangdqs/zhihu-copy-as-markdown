@@ -11,6 +11,7 @@ export default async (dom: HTMLElement): Promise<{
     markdown: string[],
     zip: JSZip,
     title: string,
+    itemId: string,
 }> => {
     const lex = lexer(dom);
 
@@ -62,6 +63,7 @@ export default async (dom: HTMLElement): Promise<{
         lex,
         markdown,
         zip,
-        title: "想法-" + zop.itemId,
+        title: "想法",
+        itemId: zop.itemId,
     }
 };
