@@ -39,7 +39,7 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 		const node = input[i];
 		const tagName = node.tagName.toLowerCase();
 
-		console.log(node, tagName);
+		// console.log(node, tagName);
 
 		switch (tagName) {
 
@@ -184,7 +184,13 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 
 					for (let row of rows) {
 						const cells = Array.from(row.cells);
-						res.push(cells.map((cell) => cell.innerHTML));
+						res.push(cells.map((cell) => cell.innerHTML.replace(
+							/<a.*?href.*?>(.*?)<svg.*?>.*?<\/svg><\/a>/gms,
+							"$1"
+						).replace(
+							/<span>(.*?)<\/span>/gms,
+							"$1"
+						)));
 					}
 
 					return res;
@@ -203,7 +209,7 @@ export const lexer = (input: NodeListOf<Element>): LexType[] => {
 		}
 
 
-		console.log(tokens);
+		// console.log(tokens);
 	}
 
 	console.log(tokens);
@@ -284,20 +290,28 @@ const Tokenize = (node: Element | string): TokenTextType[] => {
 				}
 
 				case "span": {
-					if (el.classList.contains("ztext-math")) {
-						res.push({
-							type: TokenType.Math,
-							content: el.getAttribute("data-tex"),
-							dom: el,
-						} as TokenTextInlineMath);
-					} else {
-						if (el.children[0].classList.contains("RichContent-EntityWord")) {
+					try {
+						if (el.classList.contains("ztext-math")) {
 							res.push({
-								type: TokenType.PlainText,
-								text: el.innerText,
+								type: TokenType.Math,
+								content: el.getAttribute("data-tex"),
 								dom: el,
-							} as TokenTextPlain);
+							} as TokenTextInlineMath);
+						} else {
+							if (el.children[0].classList.contains("RichContent-EntityWord")) {
+								res.push({
+									type: TokenType.PlainText,
+									text: el.innerText,
+									dom: el,
+								} as TokenTextPlain);
+							}
 						}
+					} catch {
+						res.push({
+							type: TokenType.PlainText,
+							text: el.innerText,
+							dom: el,
+						} as TokenTextPlain);
 					}
 					break;
 				}

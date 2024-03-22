@@ -1,8 +1,6 @@
-import { lexer } from "./core/lexer";
-import { parser } from "./core/parser";
-import saveLex from "./core/savelex";
+
 import { saveAs } from "file-saver";
-import { MakeButton, getAuthor, getParent, getTitle, getURL } from "./core/utils";
+import { MakeButton, getParent } from "./core/utils";
 import NormalItem from "./situation/NormalItem";
 import * as JSZip from "jszip";
 import PinItem from "./situation/PinItem";
@@ -43,6 +41,7 @@ const downloadAllResults = async () => {
 	return zip;
 };
 
+
 const main = async () => {
 
 	console.log("Starting…");
@@ -67,16 +66,20 @@ const main = async () => {
 
 		try {
 
-			if (RichText.parentElement.classList.contains("Editable")) continue;
+			try {
 
-			if (RichText.children[0].classList.contains("zhihucopier-button")) continue;
+				if (RichText.parentElement.classList.contains("Editable")) continue;
 
-			if (RichText.children[0].classList.contains("Image-Wrapper-Preview")) continue;
+				if (RichText.children[0].classList.contains("zhihucopier-button")) continue;
 
-			if (getParent(RichText, "PinItem")) {
-				const richInner = getParent(RichText, "RichContent-inner");
-				if (richInner && richInner.querySelector(".ContentItem-more")) continue;
-			};
+				if (RichText.children[0].classList.contains("Image-Wrapper-Preview")) continue;
+
+				if (getParent(RichText, "PinItem")) {
+					const richInner = getParent(RichText, "RichContent-inner");
+					if (richInner && richInner.querySelector(".ContentItem-more")) continue;
+				};
+
+			} catch { }
 
 
 			// 按钮组
@@ -207,6 +210,7 @@ const main = async () => {
 
 
 		Button.addEventListener("click", (e) => {
+			e.stopPropagation();
 			e.preventDefault();
 
 			try {

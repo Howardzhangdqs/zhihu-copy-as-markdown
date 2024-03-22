@@ -8,6 +8,7 @@ const __dirname = path.resolve();
 
 const devConfig = {
     entry: "./src/entry.ts",
+    devtool: "source-map",
     module: {
         rules: [
             {

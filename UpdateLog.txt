@@ -43,3 +43,6 @@
 
 24.1.19:
     feat: 回答批量下载 [Issue](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/1)
+
+24.3.22:
+    fix: 修复部分回答无法下载的问题 [Issue](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2)

@@ -3,9 +3,12 @@
         "outDir": "./dist/",
         "noImplicitAny": true,
         "module": "es6",
-        "target": "es5",
+        "target": "ESNext",
         "allowJs": true,
-        "lib": ["DOM", "ES6", "ES2015", "ES2016"],
+        "lib": ["DOM", "ES6", "ES2015", "ES2016", "ESNext"],
+
+        "sourceMap": true,
+        // "inlineSourceMap": true,
         "moduleResolution": "node"
     }
 }

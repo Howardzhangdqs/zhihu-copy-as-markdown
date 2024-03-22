@@ -6,6 +6,16 @@ import * as utils from "../core/utils";
 import savelex from "../core/savelex";
 
 
+// 生成8位UUID
+const getUUID = (): string => {
+    return "xxxxxxxx".replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0,
+            v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+};
+
+
 export default async (dom: HTMLElement): Promise<{
     lex: LexType[],
     markdown: string[],
@@ -46,9 +56,9 @@ export default async (dom: HTMLElement): Promise<{
         return null;
     })();
 
-    
-	const title = utils.getTitle(dom), author = utils.getAuthor(dom);
-	const url = utils.getURL(dom);
+
+    const title = utils.getTitle(dom), author = utils.getAuthor(dom);
+    const url = utils.getURL(dom);
 
     const zip = await savelex(lex);
     zip.file("info.json", JSON.stringify({
@@ -58,5 +68,7 @@ export default async (dom: HTMLElement): Promise<{
         "zop-extra-module": zaExtra,
     }, null, 4));
 
-    return { lex, markdown, zip, title: title, itemId: zop.itemId };
+    const itemId = (zop || {}).itemId || getUUID();
+
+    return { lex, markdown, zip, title: title, itemId };
 };
