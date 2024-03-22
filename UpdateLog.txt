@@ -46,3 +46,4 @@
 
 24.3.22:
     fix: 修复部分回答无法下载的问题 [Issue](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2)
+    fix: 修改批量下载中问题描述文件夹名称为“问题描述” https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2#issuecomment-2014496716

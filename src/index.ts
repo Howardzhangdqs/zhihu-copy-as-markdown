@@ -11,6 +11,7 @@ type ResultType = {
 	title: string,
 	dom: HTMLElement,
 	itemId?: string,
+	question?: boolean,
 };
 
 const allResults: ResultType[] = [];
@@ -117,6 +118,11 @@ const main = async () => {
 					dom: RichText,
 					itemId: res.itemId,
 				};
+
+				if (getParent(RichText, "QuestionRichText")) {
+					result.question = true;
+					result.itemId = "问题描述";
+				}
 			};
 
 			AddResult(result);
