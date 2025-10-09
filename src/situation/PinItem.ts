@@ -31,7 +31,8 @@ export default async (dom: HTMLElement): Promise<{
 
     }
 
-    const markdown = parser(lex);
+    // 生成 Markdown 内容
+    const contentMarkdown = parser(lex);
 
     const { zop, zaExtra } = (() => {
         let el = utils.getParent(dom, "PinItem");
@@ -50,6 +51,19 @@ export default async (dom: HTMLElement): Promise<{
     const
         author = utils.getAuthor(dom),
         url = "https://www.zhihu.com/pin/" + zop.itemId;
+
+    // 添加头部信息
+    const authorName = author?.name || "未知作者";
+    const header = [
+        `作者：${authorName}`,
+        `链接：${url}`,
+        `来源：知乎`,
+        `著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。`,
+        `---`
+    ];
+
+    // 合并头部和内容
+    const markdown = [...header, ...contentMarkdown];
 
     const zip = await savelex(lex);
 

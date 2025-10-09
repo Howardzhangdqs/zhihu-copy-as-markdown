@@ -10,16 +10,17 @@ export default async (
 
 	const zip = new JSZip();
 
-	let FigureFlag = false;
+	// 检查是否有任何需要下载的媒体文件
+	let hasMedia = false;
 
 	for (let token of lex) {
-		if (token.type === TokenType.Figure) {
-			FigureFlag = true;
+		if (token.type === TokenType.Figure || token.type === TokenType.Gif || token.type === TokenType.Video) {
+			hasMedia = true;
 			break;
-		};
-	};
+		}
+	}
 
-	if (FigureFlag) {
+	if (hasMedia) {
 
 		const assetsFolder = zip.folder(assetsPath);
 
@@ -41,7 +42,7 @@ export default async (
 		};
 
 	}
-	
+
 	const markdown = parser(lex).join("\n\n");
 
 	zip.file("index.md", markdown);

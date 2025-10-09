@@ -4,6 +4,14 @@ import { MakeButton, getParent } from "./core/utils";
 import NormalItem from "./situation/NormalItem";
 import * as JSZip from "jszip";
 import PinItem from "./situation/PinItem";
+import {
+	selectObsidianVault,
+	saveToObsidian,
+	batchSaveToObsidian,
+	loadObsidianConfig,
+	saveObsidianConfig,
+} from "./core/obsidianSaver";
+import type { LexType } from "./core/tokenTypes";
 
 type ResultType = {
 	markdown: string[],
@@ -12,9 +20,13 @@ type ResultType = {
 	dom: HTMLElement,
 	itemId?: string,
 	question?: boolean,
+	lex: LexType[],
 };
 
 const allResults: ResultType[] = [];
+
+// Obsidian vault 句柄（全局变量）
+let obsidianVaultHandle: FileSystemDirectoryHandle | null = null;
 
 const AddResult = (result: ResultType) => {
 	// 如果 result.dom 与其他的 dom 不重复，就添加
@@ -105,6 +117,7 @@ const main = async () => {
 					title: res.title,
 					dom: RichText,
 					itemId: res.itemId,
+					lex: res.lex,
 				};
 			} else {
 				// 回答
@@ -117,6 +130,7 @@ const main = async () => {
 					title: res.title,
 					dom: RichText,
 					itemId: res.itemId,
+					lex: res.lex,
 				};
 
 				if (getParent(RichText, "QuestionRichText")) {
@@ -126,6 +140,58 @@ const main = async () => {
 			};
 
 			AddResult(result);
+
+
+			// 保存到 Obsidian
+			const ButtonObsidian = MakeButton();
+			ButtonObsidian.innerHTML = "保存到Obsidian";
+			ButtonObsidian.style.width = "100px";
+			ButtonObsidian.style.marginLeft = ".2em";
+			ButtonContainer.prepend(ButtonObsidian);
+
+			ButtonObsidian.addEventListener("click", async () => {
+				try {
+					// 如果没有选择过路径，先选择
+					if (!obsidianVaultHandle) {
+						ButtonObsidian.innerHTML = "选择Obsidian路径...";
+						obsidianVaultHandle = await selectObsidianVault();
+						if (!obsidianVaultHandle) {
+							ButtonObsidian.innerHTML = "保存到Obsidian";
+							return;
+						}
+					}
+
+					ButtonObsidian.innerHTML = "保存中...";
+					const config = loadObsidianConfig();
+					const saveResult = await saveToObsidian(
+						result.zip,
+						result.title,
+						result.markdown,
+						result.lex,
+						obsidianVaultHandle,
+						config
+					);
+
+					if (saveResult.success) {
+						ButtonObsidian.innerHTML = "保存成功✅";
+						setTimeout(() => {
+							ButtonObsidian.innerHTML = "保存到Obsidian";
+						}, 2000);
+					} else {
+						ButtonObsidian.innerHTML = "保存失败❌";
+						alert(saveResult.message);
+						setTimeout(() => {
+							ButtonObsidian.innerHTML = "保存到Obsidian";
+						}, 2000);
+					}
+				} catch (err) {
+					console.error(err);
+					ButtonObsidian.innerHTML = "发生错误";
+					setTimeout(() => {
+						ButtonObsidian.innerHTML = "保存到Obsidian";
+					}, 2000);
+				}
+			});
 
 
 			// 下载为Zip
@@ -195,7 +261,18 @@ const main = async () => {
 
 		if (titleItem.querySelector(".zhihucopier-button")) return;
 
-		// 按钮
+		// 批量保存到 Obsidian 按钮
+		const ButtonBatchObsidian = MakeButton();
+		ButtonBatchObsidian.style.width = "105px";
+		ButtonBatchObsidian.style.fontSize = "13px";
+		ButtonBatchObsidian.style.lineHeight = "13px";
+		ButtonBatchObsidian.style.margin = "0";
+		ButtonBatchObsidian.style.marginRight = ".4em";
+		ButtonBatchObsidian.innerHTML = "批量保存到Obsidian";
+
+		ButtonBatchObsidian.classList.add("zhihucopier-button");
+
+		// 批量下载按钮
 		const Button = MakeButton();
 		Button.style.width = "75px";
 		// Button.style.height = "30px";
@@ -208,11 +285,77 @@ const main = async () => {
 
 
 		if (getParent(titleItem, "App-main")) {
+			titleItem.append(ButtonBatchObsidian);
 			titleItem.append(Button);
 		} else {
 			Button.style.marginRight = ".4em";
 			titleItem.prepend(Button);
+			titleItem.prepend(ButtonBatchObsidian);
 		}
+
+
+		// 批量保存到 Obsidian 事件
+		ButtonBatchObsidian.addEventListener("click", async (e) => {
+			e.stopPropagation();
+			e.preventDefault();
+
+			try {
+				// 如果没有选择过路径，先选择
+				if (!obsidianVaultHandle) {
+					ButtonBatchObsidian.innerHTML = "选择Obsidian路径...";
+					obsidianVaultHandle = await selectObsidianVault();
+					if (!obsidianVaultHandle) {
+						ButtonBatchObsidian.innerHTML = "批量保存到Obsidian";
+						return;
+					}
+				}
+
+				ButtonBatchObsidian.innerHTML = "保存中...";
+				const questionTitle = titleItem.textContent.trim();
+
+				// 准备批量保存的数据
+				const itemsToSave = allResults.map((item) => ({
+					zip: item.zip,
+					title: item.title,
+					markdown: item.markdown,
+					lex: item.lex,
+					itemId: item.itemId,
+				}));
+
+				const saveResult = await batchSaveToObsidian(
+					itemsToSave,
+					obsidianVaultHandle,
+					questionTitle
+				);
+
+				if (saveResult.success) {
+					ButtonBatchObsidian.style.width = "130px";
+					ButtonBatchObsidian.innerHTML = "保存成功✅";
+					setTimeout(() => {
+						ButtonBatchObsidian.innerHTML = "批量保存到Obsidian";
+						ButtonBatchObsidian.style.width = "105px";
+					}, 2000);
+				} else {
+					ButtonBatchObsidian.style.width = "130px";
+					ButtonBatchObsidian.innerHTML = "保存失败❌";
+					alert(saveResult.message);
+					setTimeout(() => {
+						ButtonBatchObsidian.innerHTML = "批量保存到Obsidian";
+						ButtonBatchObsidian.style.width = "105px";
+					}, 2000);
+				}
+			} catch (err) {
+				console.error(err);
+				ButtonBatchObsidian.style.width = "190px";
+				ButtonBatchObsidian.innerHTML = "发生未知错误，请联系开发者";
+				setTimeout(() => {
+					ButtonBatchObsidian.innerHTML = "批量保存到Obsidian";
+					ButtonBatchObsidian.style.width = "105px";
+				}, 2000);
+			}
+		});
+
+		// 批量下载事件
 
 
 		Button.addEventListener("click", (e) => {

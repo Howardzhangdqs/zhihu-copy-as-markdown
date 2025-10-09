@@ -24,7 +24,6 @@ export default async (dom: HTMLElement): Promise<{
     itemId: string,
 }> => {
     const lex = lexer(dom.childNodes as NodeListOf<Element>);
-    const markdown = parser(lex);
 
     const zopQuestion = (() => {
         const element = document.querySelector("[data-zop-question]");
@@ -59,6 +58,22 @@ export default async (dom: HTMLElement): Promise<{
 
     const title = utils.getTitle(dom), author = utils.getAuthor(dom);
     const url = utils.getURL(dom);
+
+    // 生成 Markdown 内容
+    const contentMarkdown = parser(lex);
+
+    // 添加头部信息
+    const authorName = author?.name || "未知作者";
+    const header = [
+        `作者：${authorName}`,
+        `链接：${url}`,
+        `来源：知乎`,
+        `著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。`,
+        `---`
+    ];
+
+    // 合并头部和内容
+    const markdown = [...header, ...contentMarkdown];
 
     const zip = await savelex(lex);
     zip.file("info.json", JSON.stringify({

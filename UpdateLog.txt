@@ -46,4 +46,17 @@
 
 24.3.22:
     fix: 修复部分回答无法下载的问题 [Issue](https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2)
-    fix: 修改批量下载中问题描述文件夹名称为“问题描述” https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2#issuecomment-2014496716
+    fix: 修改批量下载中问题描述文件夹名称为"问题描述" https://github.com/Howardzhangdqs/zhihu-copy-as-markdown/issues/2#issuecomment-2014496716
+
+25.10.7:
+    feat: 支持保存到本地 Obsidian vault
+    feat: 使用 File System Access API 直接保存文件到本地文件系统
+    feat: 自动创建 Attachments 文件夹保存图片和视频
+    feat: Markdown 中图片链接自动转换为 Obsidian 兼容的相对路径格式
+    feat: 支持中文路径和文件名
+    feat: 单个回答保存到 Obsidian
+    feat: 批量保存问题下所有回答到统一文件夹
+    feat: 文件名自动清理非法字符，确保跨平台兼容
+    fix: 修复 Gif 和 Video 类型文件可能不被下载的问题
+    fix: 修复图片路径与实际保存文件名不一致的问题
+    fix: 修复 ZIP 文件路径被包含在文件名中导致引用错误的问题
